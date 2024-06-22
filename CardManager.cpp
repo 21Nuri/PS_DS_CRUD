@@ -4,8 +4,13 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <ctime>
 
 extern map<string, Card*> allclasses;
+map<string, double> gradescoreCard = {
+    {"A+",4.5},{"A0",4.0},{"B+",3.5},{"B0",3.0},{"C+",2.5},{"C0",2.0},{"D+",1.5},{"D0",1.0},{"F",0}
+};
+
 
 CardManager::~CardManager(){
     vector<Card*>::iterator iter;
@@ -15,6 +20,15 @@ CardManager::~CardManager(){
 }
 
 void CardManager::printAll(){
+    int credit = 0; 
+    double gpa = 0;
+    cout << "Total " << myclasses.size() << " classes, " ;
+    for (int i=0; i<myclasses.size(); i++){
+        credit += myclasses[i]->getCredit();
+        gpa += myclasses[i]->getCredit() * myclasses[i]->getScore();
+    }
+    gpa = gpa / (credit*1.0);
+    cout << credit << " credit, GPA " << gpa << endl;
     for (int i=0; i<myclasses.size(); i++){
         cout << i+1 << " | " << myclasses[i]->toString() << endl;
     }
@@ -24,16 +38,25 @@ void CardManager::addCard(){
     string code, grade;
 	cout << ">> Enter class code > ";
 	cin >> code;
-    if(allclasses.count(code)>0){
+    for (int i=0; i<myclasses.size(); i++){
+		if(myclasses[i]->getCode() == code){
+            cout << "The Card of " << code << " already exists." << endl;
+            return;
+		}
+	}
+    if(allclasses.count(code) > 0){
         cout << allclasses[code]->toStringShort() << endl;
 	    cout << ">> Enter grade > ";
 	    cin >> grade;
-        Card* new_card = new Card(allclasses[code], grade);
-        myclasses.push_back(new_card);
-        count++;
-        total_credit += new_card->getCredit();
-    }
-    else{
+        if(gradescoreCard.count(grade) < 1){
+            cout << "Wrong grade!" << endl;
+        }else{
+            Card* new_card = new Card(allclasses[code], grade);
+            myclasses.push_back(new_card);
+            count++;
+            total_credit += new_card->getCredit();
+        }
+    }else{
         cout << "No such class." << endl;
     }
 }
@@ -80,4 +103,37 @@ void CardManager::findCards(string name){
 		}
 	}
 	cout << count << " classes found.\n";
+}
+
+void CardManager::saveClasses(){
+    time_t timer;
+    timer = time(NULL);
+    struct tm* t = localtime(&timer);
+    int credit = 0; 
+    double gpa = 0;
+	ofstream file1("mycard.txt");
+    for(int i = 0; i<myclasses.size(); i++){
+        if(i == myclasses.size()-1) file1 << myclasses[i]->getCode() << " " << myclasses[i]->getGrade();
+        else file1 << myclasses[i]->getCode() << " " << myclasses[i]->getGrade() << endl;
+    }
+	file1.close();
+
+    ofstream file2("report.txt");
+    file2 << "Total " << myclasses.size() << " classes, " ;
+    for (int i=0; i<myclasses.size(); i++){
+        credit += myclasses[i]->getCredit();
+        gpa += myclasses[i]->getCredit() * myclasses[i]->getScore();
+    }
+    gpa = gpa / (credit*1.0);
+    file2 << credit << " credit, GPA " << gpa << endl;
+    for (int i=0; i<myclasses.size(); i++){
+        file2 << i+1 << " | " << myclasses[i]->toString() << endl;
+    }
+    file2 << t->tm_year + 1900 << ". " <<  t->tm_mon + 1 << ". " << t->tm_mday << ". " << t->tm_hour << ":" << t->tm_min << ":" << t->tm_sec << endl ;
+	file2.close();
+    cout << "mycard.txt and report.txt saved." << endl;
+}
+
+void CardManager::deleteClasses(){
+    remove("mycard.txt");
 }

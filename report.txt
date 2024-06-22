@@ -1,0 +1,9 @@
+Total 7 classes, 19 credit, GPA 3.84211
+1 | ECE10002 [3]C_Programming A+ 4.5
+2 | ECE10004 [2]Introduction_CSEE A0 4
+3 | ECE10005 [1]Coding_Studio B+ 3.5
+4 | ECE20008 [3]Practical_Project1 B0 3
+5 | ECE20010 [3]Data_Structure C+ 2.5
+6 | ECE20016 [3]JAVA_Programming A+ 4.5
+7 | ECE40093 [4]Capstone_Design2 A+ 4.5
+2024. 6. 18. 15:38:29

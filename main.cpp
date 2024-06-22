@@ -19,7 +19,7 @@ int main(){
 	CardManager manager; 
 
 	while(!quit){
-		cout << "[Menu] 1.View 2.Add 3.Change 4.Sort 5.Search 6.Load 7.All 0.Quit\n";
+		cout << "[Menu] 1.View 2.Add 3.Change 4.Sort 5.Search 6.Load 7.All 8.Save 9.Delete 0.Quit\n";
 		cout << ">> Menu? > ";
 		cin >> no;
         switch(no){
@@ -54,6 +54,14 @@ int main(){
     			cout << ">>7.All Classes\n";
                 printAllClasses();
                 break;
+			case 8:
+				cout << ">>8.Save\n";
+				manager.saveClasses();
+				break;
+			case 9:
+				cout << ">>9.Delete myclasse\n";
+				manager.deleteClasses();
+				break;
             case 0:
                 quit = 1;
                 break;

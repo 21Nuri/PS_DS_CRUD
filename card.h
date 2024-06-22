@@ -21,6 +21,8 @@ public:
     string getCode(){return code;};
     string getName(){return name;};
     int getCredit(){return credit;};
+    double getScore(){return score;};
+    string getGrade(){return grade;};
     string toString();
     string toStringShort();
 
